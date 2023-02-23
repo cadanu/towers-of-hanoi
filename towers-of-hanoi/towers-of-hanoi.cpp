@@ -14,18 +14,17 @@ using std::string;
 using std::stoi;
 
 
-
 bool checkUserSelection(Utility* _util, string _choice, bool& _keep_running, bool& _restart)
 {
     if ((_choice == "x") || (_choice == "X"))
     {
         _keep_running = false;
-        cout << "You have quit the game." << endl;
+        cout << "You have quit the game." << endl;// info msg
     }
     else if ((_choice == "n") || (_choice == "N"))
     {
         _restart = true;
-        cout << "Game has been reset." << endl;
+        cout << "Restarting game..." << endl;// info msg
     }
     else if (( _util->isNumber(_choice)) && (stoi(_choice) > 0) && (stoi(_choice) <= 3))
     {
@@ -34,14 +33,15 @@ bool checkUserSelection(Utility* _util, string _choice, bool& _keep_running, boo
     }
     else
     {
-        cout << "You have entered invalid input. Please try again." << endl;
+        cout << "You have entered invalid input. Please try again." << endl;// error msg
     }
     return false;
 }
 
+
 int main()
 {
-    // int vars
+    // init vars
     bool keep_running = true;
     bool restart = false;
     bool gameState;
@@ -51,36 +51,46 @@ int main()
     Board* board = new Board();
     Utility* util = new Utility();
 
-    while (keep_running)
+    while (keep_running)// GameLoop
     {
-        board->Draw();
+        board->Draw();// draw game board with current data
         
-        std::cout << "Number of Moves: " << noOfMoves << "\n\n" << endl;
-        std::cout << "Choose Source Tower ([X] to Quit, [N] for New): ";
-        std::cin >> choiceFrom;
-        gameState = checkUserSelection(util, choiceFrom, keep_running, restart);
-        if (gameState)
+        // continue playing until a win is detected
+        cout << "Number of Moves: " << noOfMoves << "\n\n" << endl;
+        if (!board->WinGame())
         {
-            std::cout << "Choose Destination Tower ([X] to Quit, [N] for New): ";
-            std::cin >> choiceFrom;
+            cout << "Choose Source Tower ([X] to Quit, [N] for New): ";
+            cin >> choiceFrom;
             gameState = checkUserSelection(util, choiceFrom, keep_running, restart);
             if (gameState)
             {
-                board->MoveDisk(stoi(choiceFrom), stoi(choiceTo));
-                if (true)
+                std::cout << "Choose Destination Tower ([X] to Quit, [N] for New): ";
+                cin >> choiceTo;
+                gameState = checkUserSelection(util, choiceTo, keep_running, restart);
+                if (gameState)
                 {
-                    cout << "Success!" << endl;
-                    noOfMoves++;
+                    if (board->MoveDisk((stoi(choiceFrom)), (stoi(choiceTo))))
+                    {
+                        cout << "Success!" << endl;
+                        noOfMoves++;
+                    }
                 }
             }
         }
+        else {
+            cout << "\tYOU WIN!!! Good job!\n" << endl;
+            cout << "\tRestarting game..." << endl;
+            restart = true;
+        }
 
+        // housekeeping
         if (!keep_running || restart)
         {
             board->~Board();
             
             if (restart)
             {
+                noOfMoves = 0;
                 board = new Board();
             }
             else {
@@ -95,17 +105,3 @@ int main()
     cout << "\nThankyou for playing, Goodbye!\n" << endl;
 
 }
-
-
-
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

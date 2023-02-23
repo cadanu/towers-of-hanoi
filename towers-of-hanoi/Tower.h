@@ -16,7 +16,7 @@ public:
 	~Tower();
 	Disk* PopDisk();
 	void PushDisk(Disk*);
-	void Draw(int);
+	string Draw(int);
 	int DiskCount();
 	int TopDiskSize();
 };

@@ -2,7 +2,10 @@
 
 using std::strtol;
 
-Utility::Utility() {}
+Utility::Utility() 
+{
+	ptr = nullptr;
+}
 
 Utility::~Utility()
 {
