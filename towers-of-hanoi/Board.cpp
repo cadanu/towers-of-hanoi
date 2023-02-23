@@ -9,6 +9,8 @@ Board::Board()
 	tower1->PushDisk(diskL);
 	tower1->PushDisk(diskM);
 	tower1->PushDisk(diskS);
+
+	//cout << tower1->DiskCount() << endl;
 }
 
 Board::~Board()
@@ -33,12 +35,17 @@ bool Board::MoveDisk(int _from, int _to)
 			assignTower(_to)->PushDisk(assignTower(_from)->PopDisk());
 			return true;
 		}
+		else if (assignTower(_from)->TopDiskSize() == assignTower(_to)->TopDiskSize())
+		{
+			cout << "The same tower cannot be used as both source and destination. Please try again." << endl;// error msg
+
+		}
 		else {
-			cout << "Larger discs cannot be placed on top of smaller ones. Please try again." << endl;
+			cout << "Larger discs cannot be placed on top of smaller ones. Please try again." << endl;// error msg
 		}
 	}
 	else {
-		cout << "Cannot use empty tower as source. Please try again." << endl;
+		cout << "Cannot use an empty tower as a source. Please try again." << endl;// error msg
 	}
 	return false;
 }
@@ -59,15 +66,31 @@ Tower* Board::assignTower(int _select)
 	}
 }
 
-
-
+// draw game screen
 void Board::Draw()
 {
-	cout << "Drawing board...\n" << endl;	
+	string buildString;
+	cout << "TOWERS OF HANOI\n\n\n\n\n" << endl;
+	for (int i = 2; i >= 0; i--)
+	{
+		buildString = "";
+		buildString += "\t\t\t";
+		buildString += tower1->Draw(i);
+		buildString += "\t\t\t";
+		buildString += tower2->Draw(i);
+		buildString += "\t\t\t";
+		buildString += tower3->Draw(i);
+
+		cout << buildString << endl;
+	}
+	cout << "\t\t\t      1\t\t\t\t      2\t\t\t\t      3" << endl;
 }
 
 bool Board::WinGame()
 {
-	bool won = false;
-	return won;
+	if (tower3->DiskCount() == 3)
+	{
+		return true;
+	}
+	return false;
 }

@@ -9,7 +9,6 @@
 using std::string;
 using std::cout;
 using std::endl;
-using std::array;
 
 class Board
 {
@@ -20,7 +19,6 @@ class Board
 	Tower* tower1 = nullptr;
 	Tower* tower2 = nullptr;
 	Tower* tower3 = nullptr;
-	array<Tower*, 3> towerArray = { tower1, tower2, tower3 };
 
 	Tower* assignTower(int);
 

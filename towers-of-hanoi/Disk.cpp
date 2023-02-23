@@ -10,22 +10,19 @@ int Disk::getSize()
 	return m_size;
 }
 
-void Disk::Draw()
+string Disk::Draw()
 {
-	//int size = stoi(m_size);
 	int spaces = (12 - m_size) / 2;
+	string spacesStr;
+	string diskStr;
 
 	for (int i = 0; i < spaces; i++)
 	{
-		cout << " ";
+		spacesStr += " ";
 	}
 	for (int i = 0; i < m_size; i++)
 	{
-		cout << "*";
+		diskStr += "*";
 	}
-	for (int i = 0; i < spaces; i++)
-	{
-		cout << " ";
-	}
-	cout << endl;
+	return spacesStr + diskStr + spacesStr;
 }
