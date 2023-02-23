@@ -28,6 +28,5 @@ public:
 	bool MoveDisk(int, int);
 	void Draw();
 	bool WinGame();
-
 };
 
